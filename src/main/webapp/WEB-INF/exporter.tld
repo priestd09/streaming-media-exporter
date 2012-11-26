@@ -1,0 +1,14 @@
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd" 
+    version="2.0">
+
+    <tlib-version>2.0</tlib-version>
+    <uri>http://shamu.ch/expoter/taglib</uri>
+
+    <function>
+        <name>escape</name>
+        <function-class>ch.shamu.streaming.media.exporter.tags.StringUtils</function-class>
+        <function-signature>java.lang.String escape(java.lang.String)</function-signature>
+    </function>
+</taglib>

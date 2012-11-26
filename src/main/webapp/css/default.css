@@ -1,0 +1,20 @@
+img.working {
+	top: -38px;
+	position: relative;
+	left: 12px;
+}
+
+button.sendCommand{
+	position: relative;
+	top: -5px;
+}
+
+pre.streaming {
+	margin-top : 20px;
+	padding-bottom : 24px; /* Line height of the PRE */
+}
+
+.btn-large [class^="icon-"], .btn-large [class*=" icon-"] {
+margin-top: 3px;
+margin-right: 10px;
+}
