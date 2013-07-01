@@ -26,7 +26,7 @@ public class FileContentManager {
 		}
 		// read the file
 		List<String> content = new ArrayList<String>();
-		File file = new File(WebappConfig.get("log.dir")+"/downloads/"+fileName);
+		File file = new File(WebappConfig.get("log.dir")+File.separator+"downloads"+File.separator+fileName);
 		Scanner s = new Scanner(file).useDelimiter("\n");
 		while (s.hasNext()){
 			content.add(s.next());

@@ -50,11 +50,11 @@ public class HomeAction extends DefaultAction {
 	public Resolution export() throws IOException{
 		String id = artist;
 		if (album != null && !"".equals(album)){
-			id += "/"+album;
+			id += File.separator+album;
 		}
-		id += "/"+title;
+		id += File.separator+title;
 		MediaExporter.getInstance().run(url, id, extractAudio, keepVideo);
-		return new RedirectResolution(LogAction.class).addParameter("logFileName",id.replace("/", "_")+".log");
+		return new RedirectResolution(LogAction.class).addParameter("logFileName",id.replace(File.separator, "_")+".log");
 	}
 
 	@ValidationMethod(on="download")
@@ -117,7 +117,7 @@ public class HomeAction extends DefaultAction {
 	
 	public List<Exportation> getPreviousExportations() throws UnsupportedEncodingException, FileNotFoundException{
 		List<Exportation> res = new ArrayList<Exportation>();
-		File folder = new File(WebappConfig.get("log.dir")+"/downloads");
+		File folder = new File(WebappConfig.get("log.dir")+File.separator+"downloads");
 	    File[] listOfFiles = folder.listFiles();
 	    for (int i = 0; i < listOfFiles.length; i++) {
 		      if (listOfFiles[i].isFile()) {

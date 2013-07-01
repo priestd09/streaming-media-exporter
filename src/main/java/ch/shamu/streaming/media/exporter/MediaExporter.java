@@ -69,7 +69,7 @@ public class MediaExporter {
 		  }
 		  
 		  public void createLogFile() {
-			 this.logFileName = WebappConfig.get("log.dir")+"/downloads/"+id.replace("/", "_")+".log";
+			 this.logFileName = WebappConfig.get("log.dir")+File.separator+"downloads"+File.separator+id.replace(File.separator, "_")+".log";
 			 FileContentManager.createFile(this.logFileName);
 		  }
 		  
@@ -86,7 +86,7 @@ public class MediaExporter {
 					env.put("PATH", WebappConfig.get("priority.path")+":"+env.get("PATH"));
 					this.p = pb.start();
 					String downloadedMp3FileName = logExecution(p, logFileName);
-					String dest = WebappConfig.get("music.folder")+"/"+id+".mp3";
+					String dest = WebappConfig.get("music.folder")+File.separator+id+".mp3";
 					if (! new File(dest).getParentFile().exists()){
 						new File(dest).getParentFile().mkdirs();
 					}
@@ -102,21 +102,21 @@ public class MediaExporter {
 				pb.directory(new File(WebappConfig.get("temp.folder")));
 				pb.redirectErrorStream(true);
 				Map<String,String> env = pb.environment();
-				env.put("PATH", WebappConfig.get("priority.path")+":"+env.get("PATH"));
+				env.put("PATH", WebappConfig.get("priority.path")+File.pathSeparator+env.get("PATH"));
 				this.p = pb.start();
 				
-				String downloadedVideoFileName = WebappConfig.get("temp.folder")+"/"+logExecution(p, logFileName);
+				String downloadedVideoFileName = WebappConfig.get("temp.folder")+File.separator+logExecution(p, logFileName);
 
 		        if (extractAudio != null && extractAudio){
-		        	if (! new File(WebappConfig.get("music.folder")+"/"+id+".mp3").getParentFile().exists()){
-		        		new File(WebappConfig.get("music.folder")+"/"+id+".mp3").getParentFile().mkdirs();
+		        	if (! new File(WebappConfig.get("music.folder")+File.separator+id+".mp3").getParentFile().exists()){
+		        		new File(WebappConfig.get("music.folder")+File.separator+id+".mp3").getParentFile().mkdirs();
 		        	}
-		        	pb = new ProcessBuilder(ExternalTool.FFMPEG.path, "-i",downloadedVideoFileName,"-f","mp3","-ab","256000","-vn",WebappConfig.get("music.folder")+"/"+id+".mp3");
-					FileContentManager.append(logFileName, ExternalTool.FFMPEG.path+" -i "+downloadedVideoFileName+" -f mp3 -ab 256000 -vn "+WebappConfig.get("music.folder")+"/"+id+".mp3");
+		        	pb = new ProcessBuilder(ExternalTool.FFMPEG.path, "-i",downloadedVideoFileName,"-f","mp3","-ab","256000","-vn",WebappConfig.get("music.folder")+File.separator+id+".mp3");
+					FileContentManager.append(logFileName, ExternalTool.FFMPEG.path+" -i "+downloadedVideoFileName+" -f mp3 -ab 256000 -vn "+WebappConfig.get("music.folder")+File.separator+id+".mp3");
 		        	pb.directory(new File(WebappConfig.get("temp.folder")));
 					pb.redirectErrorStream(true);
 					env = pb.environment();
-					env.put("PATH", WebappConfig.get("priority.path")+":"+env.get("PATH"));
+					env.put("PATH", WebappConfig.get("priority.path")+File.pathSeparator+env.get("PATH"));
 					this.p = pb.start();
 					FileContentManager.append(logFileName,"Extracting audio from "+downloadedVideoFileName+" to mp3");
 					logExecution(p, logFileName);
@@ -127,7 +127,7 @@ public class MediaExporter {
 					// create destination directory if it doest not exist
 					String src = downloadedVideoFileName;
 					String relativeDest = id+"."+FilePathUtils.getExtension(src);
-					String dest = WebappConfig.get("videos.folder")+"/"+relativeDest;
+					String dest = WebappConfig.get("videos.folder")+File.separator+relativeDest;
 
 					
 					if (keepVideo != null && keepVideo){
@@ -158,9 +158,9 @@ public class MediaExporter {
 		    BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		    while ((s = stdout.readLine()) != null) {
 		    	FileContentManager.append(fileName, s);
-			    String[] split = s.split(" ");
-			    if (split.length > 1 && split[1].equals("Destination:")){
-			    	downloadedFileName = split[split.length-1];
+			    String[] split = s.split(":");
+			    if (split.length > 1 && split[0].equals("[download] Destination")){
+			    	downloadedFileName = s.replace("[download] Destination: ","");
 			    }
 
 			}

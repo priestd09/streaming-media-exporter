@@ -5,19 +5,12 @@ import com.google.common.base.Joiner;
 public class FilePathUtils {
 
 	public static void assertSafe(String s){
-		if (s.contains("../"))
+		if (s.contains("../") || s.contains("..\\"))
 			throw new IllegalAccessError();
 	}
 	
 	public static String getExtension(String s){
 		return s.split("\\.")[s.split("\\.").length-1];
-	}
-	
-	public static String getFolder(String s){
-		String[] split = s.split("/");
-		split[split.length-1] = "";
-		Joiner j = Joiner.on("/");
-		return  j.join(split).substring(0,j.join(split).length()-1);
 	}
 
 	public static String getFileName(String filePath) {
